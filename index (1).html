@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Know the Art Better | A skill to find books on Performing Arts</title>
+<meta name="description" content="A skill to find books on Performing Arts, by Diptashree Banerjee.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1f4e9c;
+  --blue-dark: #12326a;
+  --blue-tint: #eaf1fb;
+  --blue-line: #b9cdea;
+  --ink: #1b2536;
+  --muted: #55627a;
+  --white: #ffffff;
+  --error: #a32020;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { background: var(--blue); }
+body {
+  margin: 0;
+  padding: 12px;
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--blue);
+}
+.shell {
+  min-height: calc(100vh - 24px);
+  min-height: calc(100dvh - 24px);
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 2px solid var(--blue-dark);
+  outline: 6px solid var(--blue-line);
+  outline-offset: -10px;
+}
+a { color: var(--blue); }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+/* Header and menu */
+header { padding: 40px 28px 0; text-align: center; }
+header h1 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 7vw, 3.8rem);
+  line-height: 1.1;
+  margin: 0;
+  color: var(--blue-dark);
+}
+header p { margin: 10px 0 0; color: var(--muted); font-size: 1.15rem; }
+nav { margin-top: 28px; border-top: 1px solid var(--blue-line); border-bottom: 1px solid var(--blue-line); }
+nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; flex-wrap: wrap; }
+nav a {
+  display: block;
+  padding: 14px 22px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--blue-dark);
+  border-bottom: 3px solid transparent;
+}
+nav a:hover { background: var(--blue-tint); }
+nav a[aria-current="page"] { border-bottom-color: var(--blue); color: var(--blue); }
+
+/* Main */
+main { flex: 1; width: 100%; max-width: 860px; margin: 0 auto; padding: 36px 24px 48px; }
+.page[hidden] { display: none; }
+.page h2 { font-family: var(--serif); font-size: 1.9rem; margin: 0 0 12px; color: var(--blue-dark); }
+.page h3 { font-family: var(--serif); font-size: 1.3rem; margin: 0 0 8px; color: var(--blue-dark); }
+.lead { font-size: 1.2rem; max-width: 62ch; }
+.block { border-left: 4px solid var(--blue); padding: 4px 0 4px 18px; margin: 28px 0; }
+.block p, .block ul { margin: 6px 0; max-width: 66ch; }
+.block ul { padding-left: 20px; }
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  background: var(--blue);
+  color: var(--white);
+  border: 2px solid var(--blue);
+  border-radius: 4px;
+  font: 600 1rem var(--sans);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+.btn.secondary { background: var(--white); color: var(--blue); }
+.btn.secondary:hover { background: var(--blue-tint); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+
+/* Form */
+fieldset { border: 1px solid var(--blue-line); border-radius: 4px; margin: 22px 0; padding: 8px 18px 18px; }
+legend { font-family: var(--serif); font-weight: 600; font-size: 1.15rem; color: var(--blue-dark); padding: 0 8px; }
+.field { display: block; margin-top: 14px; font-weight: 600; }
+.field input, .field select {
+  display: block; width: 100%; margin-top: 6px; padding: 11px;
+  font: 400 1rem var(--sans); color: var(--ink);
+  border: 1px solid #8aa5cf; border-radius: 4px; background: var(--white);
+}
+.hint { display: block; font-weight: 400; font-size: .9rem; color: var(--muted); }
+.row { display: grid; gap: 0 18px; grid-template-columns: 1fr; }
+.toggle { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; cursor: pointer; }
+.toggle input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--blue); flex: none; }
+.toggle.off { opacity: .55; cursor: not-allowed; }
+.toggle small { display: block; color: var(--muted); font-size: .9rem; }
+.error { color: var(--error); font-weight: 600; min-height: 1.5em; margin: 8px 0 0; }
+#result {
+  white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: auto;
+  background: var(--blue-tint); border: 1px solid var(--blue-line);
+  padding: 16px; border-radius: 4px; font: .95rem/1.5 ui-monospace, Consolas, monospace; margin: 0;
+}
+.status { min-height: 1.5em; color: var(--blue-dark); font-weight: 600; }
+
+/* Author */
+.author-card { border: 1px solid var(--blue-line); border-radius: 4px; padding: 22px; margin-top: 20px; }
+.author-card dl { margin: 0; display: grid; gap: 4px 20px; grid-template-columns: 1fr; }
+.author-card dt { font-weight: 600; color: var(--muted); margin-top: 10px; }
+.author-card dd { margin: 0; font-size: 1.15rem; }
+.todo { color: var(--muted); font-style: italic; }
+
+/* Constant footer */
+footer {
+  background: var(--blue);
+  color: var(--white);
+  text-align: center;
+  padding: 18px 20px;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+@media (min-width: 640px) {
+  body { padding: 18px; }
+  .shell { min-height: calc(100vh - 36px); min-height: calc(100dvh - 36px); }
+  .row { grid-template-columns: 1fr 1fr; }
+  .author-card dl { grid-template-columns: 150px 1fr; }
+  .author-card dt { margin-top: 0; }
+}
+@media (max-width: 420px) {
+  header { padding: 30px 16px 0; }
+  nav a { padding: 12px 14px; }
+  main { padding: 28px 16px 40px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <h1>Know the Art Better</h1>
+    <p>A skill to find books on Performing Arts</p>
+    <nav aria-label="Main menu">
+      <ul>
+        <li><a href="#home" data-page="home">Home</a></li>
+        <li><a href="#search" data-page="search">Search Your Book</a></li>
+        <li><a href="#author" data-page="author">Author</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- HOME -->
+    <section class="page" id="page-home" aria-labelledby="h-home">
+      <h2 id="h-home">About the project</h2>
+      <p class="lead">Performing Arts Book Finder is a modular LLM skill that discovers and recommends books on the performing arts of any country you choose.</p>
+
+      <div class="block">
+        <h3>What it does</h3>
+        <ul>
+          <li>Finds books by country and discipline: theatre, dance, music, puppetry, opera and performance studies.</li>
+          <li>Separates academic research from general reading.</li>
+          <li>Verifies titles, authors, publishers, years and ISBNs against reliable catalogues.</li>
+          <li>Returns structured recommendations with source links and access information.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h3>How it works</h3>
+        <p>Six modules work in sequence: Country, Discipline, Book Discovery, Academic Filter, Verification and Output. Six switches shape each search: Academic Books Only, Historical Focus, Traditional Performing Arts, Contemporary Performing Arts, Open Access Preference and Strict Source Verification.</p>
+        <p>The skill never invents bibliographic details. If a book cannot be verified, it is marked as not verified or left out.</p>
+      </div>
+
+      <div class="block">
+        <h3>Example queries</h3>
+        <ul>
+          <li>Find books on theatre in India.</li>
+          <li>Find academic books on dance in Japan.</li>
+          <li>Find books on puppetry in Indonesia.</li>
+          <li>Find books on contemporary music in Nigeria.</li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <a class="btn" href="#search">Search your book</a>
+        <a class="btn secondary" href="https://github.com/YOUR-USERNAME/performing-arts-book-finder" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="page" id="page-search" aria-labelledby="h-search" hidden>
+      <h2 id="h-search">Search your book</h2>
+      <p class="lead">Choose your preferences, generate the search settings, then give them to the skill.</p>
+
+      <form id="finder" novalidate>
+        <fieldset>
+          <legend>Search preferences</legend>
+          <label class="field" for="country">Country
+            <input type="text" id="country" placeholder="e.g. India" autocomplete="off">
+          </label>
+          <div class="row">
+            <label class="field" for="discipline">Performing arts discipline
+              <select id="discipline">
+                <option value="Theatre">Theatre</option>
+                <option value="Dance">Dance</option>
+                <option value="Music">Music</option>
+                <option value="Puppetry">Puppetry</option>
+                <option value="Opera">Opera</option>
+                <option value="Performance Studies">Performance Studies</option>
+                <option value="All">All Performing Arts</option>
+              </select>
+            </label>
+            <label class="field" for="bookCount">Number of books
+              <input type="number" id="bookCount" value="5" min="1" max="30" inputmode="numeric">
+              <span class="hint">Between 1 and 30</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Modules</legend>
+          <p class="hint">Country, Discipline, Book Discovery and Output modules are always on.</p>
+          <label class="toggle"><input type="checkbox" id="academicModule" checked><span>Academic Filter Module</span></label>
+          <label class="toggle"><input type="checkbox" id="verificationModule" checked><span>Verification Module</span></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Feature switches</legend>
+          <label class="toggle" id="t-academicOnly"><input type="checkbox" id="academicOnly"><span>Academic Books Only<small>Prioritise scholarly and research-oriented books.</small></span></label>
+          <label class="toggle"><input type="checkbox" id="historical"><span>Historical Focus<small>Prioritise books on historical performing arts.</small></span></label>
+          <label class="toggle"><input type="checkbox" id="traditional" checked><span>Traditional Performing Arts<small>Include traditional and folk performance traditions.</small></span></label>
+          <label class="toggle"><input type="checkbox" id="contemporary" checked><span>Contemporary Performing Arts<small>Include modern and contemporary performance.</small></span></label>
+          <label class="toggle"><input type="checkbox" id="openAccess"><span>Prefer Open Access<small>Prioritise books with confirmed free full-text access.</small></span></label>
+          <label class="toggle" id="t-strict"><input type="checkbox" id="strict" checked><span>Strict Source Verification<small>Only include books with corroborated core bibliographic details.</small></span></label>
+        </fieldset>
+
+        <p class="error" id="error" role="alert"></p>
+        <div class="actions">
+          <button type="submit" class="btn">Generate search settings</button>
+        </div>
+      </form>
+
+      <h3 style="margin-top:32px">Generated configuration</h3>
+      <pre id="result" aria-live="polite">Your selected settings will appear here.</pre>
+      <div class="actions">
+        <button type="button" class="btn secondary" id="copyBtn" disabled>Copy settings</button>
+        <button type="button" class="btn secondary" id="downloadBtn" disabled>Download switches.json</button>
+      </div>
+      <p class="status" id="status" role="status"></p>
+    </section>
+
+    <!-- AUTHOR -->
+    <section class="page" id="page-author" aria-labelledby="h-author" hidden>
+      <h2 id="h-author">Author</h2>
+      <div class="author-card">
+        <dl>
+          <dt>Name</dt>
+          <dd>Diptashree Banerjee</dd>
+          <dt>Affiliation</dt>
+          <dd class="todo">[Add your institution or department here]</dd>
+          <dt>LinkedIn</dt>
+          <dd><a href="https://www.linkedin.com/in/YOUR-PROFILE" target="_blank" rel="noopener noreferrer">linkedin.com/in/YOUR-PROFILE</a></dd>
+        </dl>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Know the Art Better &middot; Diptashree Banerjee</footer>
+</div>
+
+<script>
+(function () {
+  var pages = ["home", "search", "author"];
+  var titles = { home: "Home", search: "Search Your Book", author: "Author" };
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* Navigation */
+  function show(name, moveFocus) {
+    if (pages.indexOf(name) === -1) name = "home";
+    pages.forEach(function (p) { $("page-" + p).hidden = (p !== name); });
+    document.querySelectorAll("nav a").forEach(function (a) {
+      if (a.dataset.page === name) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+    document.title = titles[name] + " | Know the Art Better";
+    window.scrollTo(0, 0);
+    if (moveFocus) $("main").focus({ preventScroll: true });
+  }
+  window.addEventListener("hashchange", function () { show(location.hash.slice(1), true); });
+  show(location.hash.slice(1), false);
+
+  /* Switch dependencies */
+  function syncDependencies() {
+    var acad = $("academicModule").checked;
+    var ver = $("verificationModule").checked;
+    $("academicOnly").disabled = !acad;
+    $("t-academicOnly").classList.toggle("off", !acad);
+    $("strict").disabled = !ver;
+    $("t-strict").classList.toggle("off", !ver);
+  }
+  $("academicModule").addEventListener("change", syncDependencies);
+  $("verificationModule").addEventListener("change", syncDependencies);
+  syncDependencies();
+
+  /* Generate settings */
+  var latest = "";
+  function setOutputButtons(on) {
+    $("copyBtn").disabled = !on;
+    $("downloadBtn").disabled = !on;
+  }
+
+  $("finder").addEventListener("submit", function (e) {
+    e.preventDefault();
+    $("status").textContent = "";
+    var acad = $("academicModule").checked;
+    var ver = $("verificationModule").checked;
+
+    var settings = {
+      country: $("country").value.trim(),
+      discipline: $("discipline").value,
+      number_of_books: Number($("bookCount").value),
+      modules: {
+        country: true, discipline: true, discovery: true,
+        academic_filter: acad, verification: ver, output: true
+      },
+      switches: {
+        academic_only: acad && $("academicOnly").checked,
+        historical_focus: $("historical").checked,
+        traditional_arts: $("traditional").checked,
+        contemporary_arts: $("contemporary").checked,
+        open_access_preference: $("openAccess").checked,
+        strict_verification: ver && $("strict").checked
+      }
+    };
+
+    var msg = "";
+    if (!settings.country) msg = "Enter a country to search.";
+    else if (!Number.isInteger(settings.number_of_books) ||
+             settings.number_of_books < 1 || settings.number_of_books > 30)
+      msg = "Enter a number of books between 1 and 30.";
+    else if (!settings.switches.traditional_arts && !settings.switches.contemporary_arts)
+      msg = "Turn on Traditional or Contemporary Performing Arts, or both.";
+
+    $("error").textContent = msg;
+    if (msg) { setOutputButtons(false); return; }
+
+    latest = JSON.stringify(settings, null, 2);
+    $("result").textContent = latest;
+    setOutputButtons(true);
+    $("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  $("copyBtn").addEventListener("click", function () {
+    var done = function () { $("status").textContent = "Settings copied."; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(latest).then(done, function () {
+        $("status").textContent = "Copy failed. Select the text above and copy it manually.";
+      });
+    } else {
+      $("status").textContent = "Copy is not available here. Select the text above and copy it manually.";
+    }
+  });
+
+  $("downloadBtn").addEventListener("click", function () {
+    var url = URL.createObjectURL(new Blob([latest], { type: "application/json" }));
+    var a = document.createElement("a");
+    a.href = url; a.download = "switches.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    $("status").textContent = "switches.json downloaded.";
+  });
+})();
+</script>
+</body>
+</html>
