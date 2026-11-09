@@ -1,6 +1,6 @@
+
 ---
 Name: performing-arts-book-finder
-
 Description: Discover, filter, and verify books on performing arts based on a specified country, discipline, historical period and research preference. Use when users request books about theatre, dance, music, puppetry, opera or performance studies associated with a country.
 ---
 
